@@ -22,6 +22,7 @@ import * as firebase from "firebase";
 
 
 import { config } from "./app.firebase.config"
+import {ProfilePage} from "../pages/profile/profile";
 @NgModule({
   declarations: [
     MyApp,
@@ -32,7 +33,8 @@ import { config } from "./app.firebase.config"
     TodosPage,
     TodoPage,
     ModalPage,
-    LoginPage
+    LoginPage,
+    ProfilePage
   ],
   imports: [
     BrowserModule,
@@ -50,7 +52,8 @@ import { config } from "./app.firebase.config"
     TodosPage,
     TodoPage,
     ModalPage,
-    LoginPage
+    LoginPage,
+    ProfilePage
   ],
   providers: [
     StatusBar,

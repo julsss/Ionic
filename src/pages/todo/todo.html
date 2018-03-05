@@ -25,9 +25,9 @@
       <ion-item >
         <ion-icon name="cart" item-start></ion-icon>
         <ion-label>{{item.name}}</ion-label>
-        <ion-card-content>
+        <div item-content>
           {{item.desc}}
-        </ion-card-content>
+        </div>
         <ion-checkbox item-end disabled="false" [(ngModel)]="item.complete"></ion-checkbox>
       </ion-item>
       <ion-item-options side="right">

@@ -14,12 +14,16 @@
 
 
 <ion-content padding>
-  <ion-item>
+  <ion-item >
     <ion-label color="primary">Name</ion-label>
-    {{this.firebase.auth().currentUser.displayName}}
+    <div item-content>
+      {{userProfile.displayName}}
+    </div>
   </ion-item>
   <ion-item>
     <ion-label color="primary">Email</ion-label>
-    {{this.firebase.auth().currentUser.email}}
+    <div item-content>
+      {{userProfile.email}}
+    </div>
   </ion-item>
 </ion-content>

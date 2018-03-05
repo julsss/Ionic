@@ -1,6 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import firebase from 'firebase';
+import {TabsPage} from "../tabs/tabs";
 
 
 /**
@@ -17,9 +18,10 @@ import firebase from 'firebase';
 })
 export class ProfilePage {
 
+  userProfile : firebase.User = null;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-
+    this.userProfile=firebase.auth().currentUser;
   }
 
   ionViewDidLoad() {
