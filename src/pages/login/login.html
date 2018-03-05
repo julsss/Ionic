@@ -26,28 +26,30 @@
     </ion-item>
     <ion-item>
       <button ion-button color="primary" icon-start>
-        <ion-icon name="construct">
+        <ion-icon name="log-in">
         </ion-icon>
         Se connecter
       </button>
     </ion-item>
 
-  </ion-list>
-    <ion-list>
-
       <ion-item>
-      <button ion-button color="primary" icon-start (click)="loginUser('facebook')">
-        <ion-icon name="facebook">
-        </ion-icon>
-        Se connecter avec Facebook
-      </button>
-      </ion-item>
-      <ion-item>
-      <button ion-button color="danger" icon-start (click)="loginUser()" *ngIf="!userProfile">
-        <ion-icon name="logo-googleplus">
-        </ion-icon>
-        Se connecter avec Gmail
-      </button>
+        <ion-buttons>
+          <button ion-button color="facebook" icon-start (click)="loginUser('facebook')">
+            <ion-icon name="logo-facebook">
+            </ion-icon>
+            Facebook
+          </button>
+          <button ion-button color="danger" icon-start (click)="loginUser('google')">
+            <ion-icon name="logo-google">
+            </ion-icon>
+            Gmail
+          </button>
+          <button ion-button color="primary" icon-start>
+            <ion-icon name="add">
+            </ion-icon>
+            Créer compte
+          </button>
+        </ion-buttons>
       </ion-item>
     </ion-list>
 </ion-content>

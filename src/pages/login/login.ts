@@ -1,6 +1,7 @@
 import {Component, getPlatform, Inject} from '@angular/core';
 import {IonicPage, NavController, Platform} from 'ionic-angular';
 import { GooglePlus } from '@ionic-native/google-plus';
+import {Facebook, FacebookLoginResponse} from "@ionic-native/facebook";
 import {HomePage} from "../home/home";
 import {FirebaseApp} from "angularfire2";
 import {AngularFireAuth} from "angularfire2/auth";
@@ -23,7 +24,7 @@ export class LoginPage {
 
   userProfile: any = null;
 
-  constructor(@Inject(FirebaseApp)firebase:any,public af:AngularFireAuth, public navCtrl: NavController, private googlePlus: GooglePlus, private platform : Platform) {
+  constructor(@Inject(FirebaseApp)firebase:any,public af:AngularFireAuth, public navCtrl: NavController,private facebook : Facebook, private googlePlus: GooglePlus, private platform : Platform) {
     firebase.auth().onAuthStateChanged( user => {
       if (user){
         this.userProfile = user;
@@ -34,40 +35,42 @@ export class LoginPage {
     });
   }
 
-  loginUser(){
+  loginUser(modeconnexion : string){
     if(this.platform.is("cordova")) {
-      this.googlePlus.login({
-        'webClientId': '136045275169-mpr1gsqn8ud2rqa7d5jv918hpv75drrd.apps.googleusercontent.com',
-        'offline': true
-      }).then(res => {
-        firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
-          .then(success => {
-            console.log("Firebase success: " + JSON.stringify(success));
-            this.navCtrl.setRoot(TabsPage);
-          })
-          .catch(error => console.log("Firebase failure: " + JSON.stringify(error)));
-      }).catch(err => console.error("Error: ", err));
+      if(modeconnexion == 'google'){
+        this.googlePlus.login({
+          'webClientId': '136045275169-mpr1gsqn8ud2rqa7d5jv918hpv75drrd.apps.googleusercontent.com',
+          'offline': true
+        }).then(res => {
+          firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
+            .then(success => {
+              console.log("Firebase success: " + JSON.stringify(success));
+              this.navCtrl.setRoot(TabsPage);
+            })
+            .catch(error => console.log("Firebase failure: " + JSON.stringify(error)));
+        }).catch(err => console.error("Error: ", err));
+      }
+      else {
+        /*this.facebook.login(
+          ['public_profile', 'user_friends', 'email']
+        ).then((res: FacebookLoginResponse) => console.log('Logged into Facebook!', res))
+          .catch(e => console.log('Error logging into Facebook', e));*/
+      }
     }
     else {
-      return this.af.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(res => {
-        console.log("angularfirebase success");
-        this.navCtrl.setRoot(TabsPage);
-      });
+      if(modeconnexion == 'google') {
+        return this.af.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(res => {
+          console.log("google angularfirebase success");
+          this.navCtrl.setRoot(TabsPage);
+        });
+      }
+      else {
+        return this.af.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()).then(res => {
+          console.log("facebook angularfirebase success");
+        });
+      }
     }
   }
-
-  /*loginUser(modeconnexion : string) {
-    if(modeconnexion == "google"){
-      console.log("GOOGLE");
-      return this.authfirebase.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-        .then(user => this.navCtrl.setRoot(HomePage));
-    }
-    else {
-      console.log("FACEBOOK");
-      return this.authfirebase.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider())
-        .then(user => this.navCtrl.setRoot(HomePage));
-    }
-  }*/
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');

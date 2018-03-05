@@ -23,6 +23,7 @@ import * as firebase from "firebase";
 
 import { config } from "./app.firebase.config"
 import {ProfilePage} from "../pages/profile/profile";
+import {Facebook} from "@ionic-native/facebook";
 @NgModule({
   declarations: [
     MyApp,
@@ -60,6 +61,7 @@ import {ProfilePage} from "../pages/profile/profile";
     SplashScreen,
     TodoServiceProvider,
     GooglePlus,
+    Facebook,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
