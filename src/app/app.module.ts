@@ -1,6 +1,9 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { GooglePlus } from '@ionic-native/google-plus';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import {AngularFireModule, FirebaseApp} from "angularfire2";
+import { AngularFireAuthModule } from 'angularfire2/auth'
 import { MyApp } from './app.component';
 
 import { AboutPage } from '../pages/about/about';
@@ -14,7 +17,11 @@ import {TodosPage} from "../pages/todos/todos";
 import { TodoServiceProvider } from '../providers/todo-service/todo-service';
 import {TodoPage} from "../pages/todo/todo";
 import {ModalPage} from "../pages/modal/modal";
+import {LoginPage} from "../pages/login/login";
+import * as firebase from "firebase";
 
+
+import { config } from "./app.firebase.config"
 @NgModule({
   declarations: [
     MyApp,
@@ -24,10 +31,13 @@ import {ModalPage} from "../pages/modal/modal";
     TabsPage,
     TodosPage,
     TodoPage,
-    ModalPage
+    ModalPage,
+    LoginPage
   ],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp(config),
+    AngularFireAuthModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -39,12 +49,14 @@ import {ModalPage} from "../pages/modal/modal";
     TabsPage,
     TodosPage,
     TodoPage,
-    ModalPage
+    ModalPage,
+    LoginPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     TodoServiceProvider,
+    GooglePlus,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
