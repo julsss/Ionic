@@ -5,6 +5,7 @@ import {HomePage} from "../home/home";
 import {FirebaseApp} from "angularfire2";
 import {AngularFireAuth} from "angularfire2/auth";
 import firebase from 'firebase';
+import {TabsPage} from "../tabs/tabs";
 
 /**
  * Generated class for the LoginPage page.
@@ -26,6 +27,7 @@ export class LoginPage {
     firebase.auth().onAuthStateChanged( user => {
       if (user){
         this.userProfile = user;
+        this.navCtrl.setRoot(TabsPage);
       } else {
         this.userProfile = null;
       }
@@ -41,6 +43,7 @@ export class LoginPage {
         firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
           .then(success => {
             console.log("Firebase success: " + JSON.stringify(success));
+            this.navCtrl.setRoot(TabsPage);
           })
           .catch(error => console.log("Firebase failure: " + JSON.stringify(error)));
       }).catch(err => console.error("Error: ", err));
@@ -48,6 +51,7 @@ export class LoginPage {
     else {
       return this.af.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(res => {
         console.log("angularfirebase success");
+        this.navCtrl.setRoot(TabsPage);
       });
     }
   }
