@@ -27,7 +27,6 @@ import {ProfilePage} from "../pages/profile/profile";
 import {Facebook} from "@ionic-native/facebook";
 import {AngularFireDatabaseModule} from "angularfire2/database";
 import { FirebaseProvider } from '../providers/firebase/firebase';
-import {TodolistPage} from "../pages/todolist/todolist";
 @NgModule({
   declarations: [
     MyApp,
@@ -39,8 +38,7 @@ import {TodolistPage} from "../pages/todolist/todolist";
     TodoPage,
     ModalPage,
     LoginPage,
-    ProfilePage,
-    TodolistPage
+    ProfilePage
   ],
   imports: [
     BrowserModule,
@@ -60,8 +58,7 @@ import {TodolistPage} from "../pages/todolist/todolist";
     TodoPage,
     ModalPage,
     LoginPage,
-    ProfilePage,
-    TodolistPage
+    ProfilePage
   ],
   providers: [
     StatusBar,
