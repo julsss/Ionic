@@ -4,6 +4,9 @@ import {TodoItem} from "../../model/todoItem";
 import {AlertController} from "ionic-angular";
 import {TodoServiceProvider} from "../../providers/todo-service/todo-service";
 import {ModalPage} from "../modal/modal";
+import {FirebaseProvider} from "../../providers/firebase/firebase";
+import {Observable} from "rxjs/Observable";
+import {AngularFireList} from "angularfire2/database";
 
 /**
  * Generated class for the TodoPage page.
@@ -21,15 +24,18 @@ export class TodoPage {
 
   uidlist : string;
   namelist : string;
-  items : TodoItem[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private modalCtrl: ModalController, private alertCtrl : AlertController, private todos : TodoServiceProvider) {
+  todoItemsAngFire: AngularFireList<any>;
+  todoItems: Observable<any[]>;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,private modalCtrl: ModalController, private alertCtrl : AlertController, private database : FirebaseProvider) {
     this.namelist = navParams.get('namelist');
     this.uidlist  = navParams.get('uid');
-    this.todos.getTodos(this.uidlist).subscribe(items => {
-      this.items = items;
-      console.log("On a une liste d'items!!!", items);
-    });
+
+
+    this.todoItemsAngFire = this.database.getTodoItems(this.uidlist);
+    this.todoItems = this.todoItemsAngFire.valueChanges();
+
 
   }
 
@@ -38,12 +44,17 @@ export class TodoPage {
     modal.present();
   }
 
-  editItem(iditem : TodoItem) {
-    let modal = this.modalCtrl.create(ModalPage, {uuidlist : this.uidlist, creation : false, item : iditem});
+  editItem(iditem) {
+    let currentTodo : TodoItem = new TodoItem();
+    currentTodo.uuid = iditem.id;
+    currentTodo.desc = iditem.desc;
+    currentTodo.complete = iditem.complete;
+    currentTodo.name = iditem.name;
+    let modal = this.modalCtrl.create(ModalPage, {uuidlist : this.uidlist, creation : false, item : currentTodo});
     modal.present();
   }
 
-  presentConfirm(todoItem : TodoItem){
+  presentConfirm(idTodo : string){
     let alert = this.alertCtrl.create({
       title : 'Comfirmation de la suppression',
       message : 'Voulez-vous vraiment supprimer cet item ?',
@@ -58,7 +69,7 @@ export class TodoPage {
         {
           text : 'Confirmer',
           handler: () => {
-            this.todos.deleteTodo(this.uidlist,todoItem.uuid);
+            this.database.deleteTodo(this.uidlist,idTodo);
             console.log('Item supprimé');
           }
         }

@@ -15,23 +15,18 @@
 
 
 <ion-content padding>
-
-
-
-
-
-  <ion-list [sliding]="true">
-    <ion-item-sliding *ngFor="let item of items">
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of todoItems | async">
       <ion-item >
         <ion-icon name="cart" item-start></ion-icon>
         <ion-label>{{item.name}}</ion-label>
         <div item-content>
           {{item.desc}}
         </div>
-        <ion-checkbox item-end disabled="false" [(ngModel)]="item.complete"></ion-checkbox>
+        <ion-checkbox item-end disabled="true" [(ngModel)]="item.complete"></ion-checkbox>
       </ion-item>
       <ion-item-options side="right">
-        <button ion-button color="danger" icon-start (click)="presentConfirm(item)">
+        <button ion-button color="danger" icon-start (click)="presentConfirm(item.id)">
           <ion-icon name="trash">
           </ion-icon>
           Supprimer
@@ -47,5 +42,6 @@
   <button ion-item (click)="presentModal()">
     Ajouter Item
   </button>
+
 
 </ion-content>

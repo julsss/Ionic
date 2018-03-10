@@ -3,6 +3,10 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import {TodoServiceProvider} from "../../providers/todo-service/todo-service";
 import {TodoList} from "../../model/todoList";
 import {TodoPage} from "../todo/todo";
+import {FirebaseProvider} from "../../providers/firebase/firebase";
+import firebase from "firebase";
+import {Observable} from "rxjs/Observable";
+import {AngularFireList} from "angularfire2/database";
 
 /**
  * Generated class for the TodosPage page.
@@ -18,18 +22,16 @@ import {TodoPage} from "../todo/todo";
   // providers: [[TodoServiceProvider]]
 })
 export class TodosPage {
-  todoList: TodoList[] = [];
-  error: string;
-  complete: boolean = false;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl : AlertController, private todos : TodoServiceProvider) {
+
+  todoListAngFire: AngularFireList<any>;
+  todoList: Observable<any[]>;
+  nbItems : number;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl : AlertController, private database : FirebaseProvider) {
     console.log("Constructor of TodosPage");
-    this.todos.getList().subscribe(
-      list => {
-          this.todoList = list;
-        },
-      error => this.error = error,
-      () => this.complete = true
-    );
+
+    this.todoListAngFire = this.database.getAllTodoList();
+    this.todoList = this.todoListAngFire.valueChanges();
 
   }
 
@@ -37,14 +39,14 @@ export class TodosPage {
     this.navCtrl.push(TodoPage,{namelist: n, uid : uid});
   }
 
-  editList(list : TodoList){
+  editList(idList : string, old : string){
     let prompt = this.alertCtrl.create({
       title: 'Edit List',
       message: "Donnez un nouveau nom à la liste",
       inputs: [
         {
           name: 'nom',
-          placeholder: list.name
+          placeholder: old
         },
       ],
       buttons: [
@@ -57,7 +59,7 @@ export class TodosPage {
         {
           text: 'Save',
           handler: data => {
-            this.todos.editList(list.uuid,data.nom);
+            this.database.editTodoList(idList,data.nom);
             console.log('Saved clicked');
           }
         }
@@ -66,7 +68,7 @@ export class TodosPage {
     prompt.present();
   }
 
-  presentConfirm(todoList : TodoList){
+  presentConfirm(idList : string){
     let alert = this.alertCtrl.create({
       title : 'Comfirmation de la suppression',
       message : 'Voulez-vous vraiment supprimer cette liste ?',
@@ -81,7 +83,7 @@ export class TodosPage {
         {
           text : 'Confirmer',
           handler: () => {
-            this.todos.deleteListTodo(todoList.uuid);
+            this.database.removeTodoList(idList);
             console.log('List supprimé');
           }
         }
@@ -110,8 +112,7 @@ export class TodosPage {
         {
           text: 'Save',
           handler: data => {
-            this.todos.addList(data.nom);
-            console.log('Saved clicked', this.todoList);
+            this.database.addTodoList(data.nom);
           }
         }
       ]

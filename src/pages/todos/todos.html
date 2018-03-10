@@ -16,23 +16,18 @@
 
 <ion-content padding>
 
-  <!--<ion-list>
-    <button ion-item *ngFor="let list of todoList" (click)="itemSelected(list.items, list.name, list.uuid)">
-      {{ list.name }} : {{list.items.length}} <br/>
-    </button>
-  </ion-list>-->
   <ion-list>
-    <ion-item-sliding *ngFor="let list of todoList" >
-      <button ion-item (click)="itemSelected(list.name, list.uuid)">
-        {{list.name}} : {{list.items!=null?list.items.length:0}}
+    <ion-item-sliding *ngFor="let list of todoList | async" >
+      <button ion-item (click)="itemSelected(list.name, list.id)">
+        {{list.name}} : {{list.nbItems}}
       </button>
       <ion-item-options side="right">
-        <button ion-button color="danger" icon-start (click)="presentConfirm(list)">
+        <button ion-button color="danger" icon-start (click)="presentConfirm(list.id)">
           <ion-icon name="trash">
           </ion-icon>
           Supprimer
         </button>
-        <button ion-button color="primary" icon-start (click)="editList(list)">
+        <button ion-button color="primary" icon-start (click)="editList(list.id,list.name)">
           <ion-icon name="construct">
           </ion-icon>
           Modifier
@@ -43,6 +38,8 @@
   <button ion-item (click)="ajoutList()">
     Ajouter Liste
   </button>
+
+
 
 
 </ion-content>

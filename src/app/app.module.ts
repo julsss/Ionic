@@ -1,3 +1,4 @@
+///<reference path="../../node_modules/angularfire2/database/database.module.d.ts"/>
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { GooglePlus } from '@ionic-native/google-plus';
@@ -24,6 +25,9 @@ import * as firebase from "firebase";
 import { config } from "./app.firebase.config"
 import {ProfilePage} from "../pages/profile/profile";
 import {Facebook} from "@ionic-native/facebook";
+import {AngularFireDatabaseModule} from "angularfire2/database";
+import { FirebaseProvider } from '../providers/firebase/firebase';
+import {TodolistPage} from "../pages/todolist/todolist";
 @NgModule({
   declarations: [
     MyApp,
@@ -35,12 +39,14 @@ import {Facebook} from "@ionic-native/facebook";
     TodoPage,
     ModalPage,
     LoginPage,
-    ProfilePage
+    ProfilePage,
+    TodolistPage
   ],
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(config),
     AngularFireAuthModule,
+    AngularFireDatabaseModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -54,7 +60,8 @@ import {Facebook} from "@ionic-native/facebook";
     TodoPage,
     ModalPage,
     LoginPage,
-    ProfilePage
+    ProfilePage,
+    TodolistPage
   ],
   providers: [
     StatusBar,
@@ -62,7 +69,9 @@ import {Facebook} from "@ionic-native/facebook";
     TodoServiceProvider,
     GooglePlus,
     Facebook,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    FirebaseProvider,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    FirebaseProvider
   ]
 })
 export class AppModule {}
