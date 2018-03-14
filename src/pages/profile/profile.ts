@@ -3,6 +3,7 @@ import {App, IonicPage, NavController, NavOptions, NavParams} from 'ionic-angula
 import firebase from 'firebase';
 import {LoginPage} from "../login/login";
 import {FirebaseProvider} from "../../providers/firebase/firebase";
+import {LoginServiceProvider} from "../../providers/login-service/login-service";
 
 
 /**
@@ -19,20 +20,15 @@ import {FirebaseProvider} from "../../providers/firebase/firebase";
 })
 export class ProfilePage {
 
-  userProfile : firebase.User = null;
+  userProfile : firebase.User;
 
-  constructor(public app : App, public navCtrl: NavController, public navParams: NavParams, private database : FirebaseProvider) {
-    this.userProfile=firebase.auth().currentUser;
+  constructor(public login : LoginServiceProvider, public app : App, public database : FirebaseProvider) {
+    this.userProfile = database.userProfile;
   }
 
   logOut(){
-    this.database.logOut();
-    firebase.auth().signOut().then(()=>{
-      this.app.getRootNav().setRoot(LoginPage);
-      //this.navCtrl.setRoot(LoginPage);
-      //this.navCtrl.popToRoot();
-    });
-
+    this.login.logOut();
+    this.app.getRootNav().setRoot(LoginPage);
   }
 
   ionViewDidLoad() {

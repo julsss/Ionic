@@ -27,6 +27,7 @@ import {ProfilePage} from "../pages/profile/profile";
 import {Facebook} from "@ionic-native/facebook";
 import {AngularFireDatabaseModule} from "angularfire2/database";
 import { FirebaseProvider } from '../providers/firebase/firebase';
+import { LoginServiceProvider } from '../providers/login-service/login-service';
 @NgModule({
   declarations: [
     MyApp,
@@ -67,7 +68,8 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
     GooglePlus,
     Facebook,
     FirebaseProvider,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    LoginServiceProvider,
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
 export class AppModule {}
