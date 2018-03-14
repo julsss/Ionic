@@ -1,8 +1,8 @@
-import {Component, Inject} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {App, IonicPage, NavController, NavOptions, NavParams} from 'ionic-angular';
 import firebase from 'firebase';
-import {TabsPage} from "../tabs/tabs";
 import {LoginPage} from "../login/login";
+import {FirebaseProvider} from "../../providers/firebase/firebase";
 
 
 /**
@@ -21,13 +21,18 @@ export class ProfilePage {
 
   userProfile : firebase.User = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public app : App, public navCtrl: NavController, public navParams: NavParams, private database : FirebaseProvider) {
     this.userProfile=firebase.auth().currentUser;
   }
 
   logOut(){
-    firebase.auth().signOut();
-    this.navCtrl.setRoot(LoginPage);
+    this.database.logOut();
+    firebase.auth().signOut().then(()=>{
+      this.app.getRootNav().setRoot(LoginPage);
+      //this.navCtrl.setRoot(LoginPage);
+      //this.navCtrl.popToRoot();
+    });
+
   }
 
   ionViewDidLoad() {

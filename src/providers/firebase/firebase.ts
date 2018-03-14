@@ -12,6 +12,10 @@ export class FirebaseProvider {
     this.userProfile=firebase.auth().currentUser;
   }
 
+  logOut(){
+    this.database.database.goOffline();
+  }
+
   getAllTodoList() {
     return this.database.list('/'+this.userProfile.uid+'/todoList');
   }
@@ -63,6 +67,7 @@ export class FirebaseProvider {
 
   deleteTodo(idList : string, idTodoItem : string){
     this.database.list('/'+this.userProfile.uid+'/todoList/'+idList+'/items/').remove(idTodoItem);
+    this.database.object('/'+this.userProfile.uid+'/todoList/'+idList+'/nbItems').query.ref.transaction((items => items-1));
   }
 
 }

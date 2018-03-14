@@ -1,5 +1,5 @@
 import {Component, getPlatform, Inject} from '@angular/core';
-import {IonicPage, NavController, Platform} from 'ionic-angular';
+import {App, IonicPage, NavController, Platform} from 'ionic-angular';
 import { GooglePlus } from '@ionic-native/google-plus';
 import {Facebook, FacebookLoginResponse} from "@ionic-native/facebook";
 import {HomePage} from "../home/home";
@@ -24,7 +24,7 @@ export class LoginPage {
 
   userProfile: any = null;
 
-  constructor(@Inject(FirebaseApp)firebase:any,public af:AngularFireAuth, public navCtrl: NavController,private facebook : Facebook, private googlePlus: GooglePlus, private platform : Platform) {
+  constructor(@Inject(FirebaseApp)firebase:any,public app : App,public af:AngularFireAuth, public navCtrl: NavController,private facebook : Facebook, private googlePlus: GooglePlus, private platform : Platform) {
     firebase.auth().onAuthStateChanged( user => {
       if (user){
         this.userProfile = user;
@@ -33,7 +33,9 @@ export class LoginPage {
         this.userProfile = null;
       }
     });
+
   }
+
 
   loginUser(modeconnexion : string){
     if(this.platform.is("cordova")) {
@@ -46,6 +48,7 @@ export class LoginPage {
             .then(success => {
               console.log("Firebase success: " + JSON.stringify(success));
               this.navCtrl.setRoot(TabsPage);
+              this.navCtrl.popToRoot();
             })
             .catch(error => console.log("Firebase failure: " + JSON.stringify(error)));
         }).catch(err => console.error("Error: ", err));
@@ -61,11 +64,16 @@ export class LoginPage {
       if(modeconnexion == 'google') {
         return this.af.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(res => {
           console.log("google angularfirebase success");
-          this.navCtrl.setRoot(TabsPage);
+          this.app.getRootNav().setRoot(TabsPage);
+          //this.navCtrl.setRoot(TabsPage);
+          //this.navCtrl.popToRoot();
         });
       }
       else {
         return this.af.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()).then(res => {
+          this.app.getRootNav().setRoot(TabsPage);
+          //this.navCtrl.setRoot(TabsPage);
+          //this.navCtrl.popToRoot();
           console.log("facebook angularfirebase success");
         });
       }

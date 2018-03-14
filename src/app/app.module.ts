@@ -68,7 +68,6 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
     Facebook,
     FirebaseProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    FirebaseProvider
   ]
 })
 export class AppModule {}
