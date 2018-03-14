@@ -28,7 +28,7 @@ export class ProfilePage {
 
   logOut(){
     this.login.logOut();
-    this.app.getRootNav().setRoot(LoginPage);
+    //this.app.getRootNav().setRoot(LoginPage);
   }
 
   ionViewDidLoad() {

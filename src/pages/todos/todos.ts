@@ -23,16 +23,13 @@ import {AngularFireList} from "angularfire2/database";
 })
 export class TodosPage {
 
-  todoListAngFire: AngularFireList<any>;
   todoList: Observable<any[]>;
   nbItems : number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl : AlertController, private database : FirebaseProvider) {
     console.log("Constructor of TodosPage");
-
-    this.todoListAngFire = this.database.getAllTodoList();
-    this.todoList = this.todoListAngFire.valueChanges();
-
+    //this.todoListAngFire = this.database.getAllTodoList();
+    this.todoList = this.database.getAllTodoList().valueChanges();
   }
 
   itemSelected(n : string, uid : string ){

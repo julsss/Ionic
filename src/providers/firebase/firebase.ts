@@ -9,11 +9,18 @@ export class FirebaseProvider {
   userProfile : firebase.User = null;
 
   constructor(public database: AngularFireDatabase) {
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          this.userProfile = user;
+          this.database.database.goOnline();
+        } else {
+          console.log("user egale null !!!!!");
+          this.database.database.goOffline();
+          this.userProfile = null;
+        }
+      }
+    )
     this.userProfile=firebase.auth().currentUser;
-  }
-
-  logOut(){
-    this.database.database.goOffline();
   }
 
   getAllTodoList() {

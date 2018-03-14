@@ -4,7 +4,7 @@ import {App, NavController, Platform} from "ionic-angular";
 import {FirebaseApp} from "angularfire2";
 import {AngularFireAuth} from "angularfire2/auth";
 import {TabsPage} from "../../pages/tabs/tabs";
-import {Facebook} from "@ionic-native/facebook";
+import {Facebook, FacebookLoginResponse} from "@ionic-native/facebook";
 import {GooglePlus} from "@ionic-native/google-plus";
 import firebase from "firebase";
 import {FirebaseProvider} from "../firebase/firebase";
@@ -22,16 +22,18 @@ export class LoginServiceProvider {
   isLogged : Subject<boolean>;
 
   constructor(@Inject(FirebaseApp)firebase:any,public app : App,public af:AngularFireAuth,
-              private facebook : Facebook, private googlePlus: GooglePlus, private platform : Platform,  private database : FirebaseProvider) {
+              private facebook : Facebook, private googlePlus: GooglePlus, private platform : Platform,
+              private database : FirebaseProvider) {
     this.isLogged = new Subject<boolean>();
     firebase.auth().onAuthStateChanged( user => {
       if (user){
-        this.database.userProfile = user;
+        //this.database.userProfile = user;
         this.isLogged.next(true);
-        //this.navCtrl.push(TabsPage);
+        console.log("mon id est : "+this.database.userProfile.uid);
       } else {
+        console.log("user egale null !!!!!")
+        //this.database.userProfile = null;
         this.isLogged.next(false);
-        this.database.userProfile = null;
       }
     });
 
@@ -46,6 +48,7 @@ export class LoginServiceProvider {
         firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
           .then(success => {
             console.log("Firebase success: " + JSON.stringify(success));
+            //this.isLogged.next(true);
             //this.navCtrl.push(TabsPage);
             //this.navCtrl.popToRoot();
           })
@@ -55,6 +58,7 @@ export class LoginServiceProvider {
     else {
       return this.af.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(res => {
         console.log("google angularfirebase success");
+        //this.isLogged.next(true);
         //this.app.getRootNav().setRoot(TabsPage);
         //this.navCtrl.push(TabsPage);
         //this.navCtrl.popToRoot();
@@ -64,28 +68,24 @@ export class LoginServiceProvider {
 
   loginFB(){
     if(this.platform.is("cordova")) {
-        /*this.facebook.login(
+        this.facebook.login(
           ['public_profile', 'user_friends', 'email']
         ).then((res: FacebookLoginResponse) => console.log('Logged into Facebook!', res))
-          .catch(e => console.log('Error logging into Facebook', e));*/
+          .catch(e => console.log('Error logging into Facebook', e));
     }
     else {
       return this.af.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()).then(res => {
         //this.app.getRootNav().setRoot(TabsPage);
         //this.navCtrl.push(TabsPage);
         //this.navCtrl.popToRoot();
+        //this.isLogged.next(true);
         console.log("facebook angularfirebase success");
       });
     }
   }
 
   logOut(){
-    this.database.logOut();
-    firebase.auth().signOut().then(()=>{
-      //this.app.getRootNav().setRoot(LoginPage);
-      //this.navCtrl.setRoot(LoginPage);
-      //this.navCtrl.pop();
-    });
+    firebase.auth().signOut();
   }
 
 }

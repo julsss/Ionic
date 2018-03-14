@@ -30,14 +30,10 @@ export class LoginPage {
 
   loginUser(modeconnexion : string){
     if(modeconnexion == "google"){
-      this.login.logInGoogle().then(res =>
-        this.app.getRootNav().setRoot(TabsPage)
-      )
+      this.login.logInGoogle();
     }
     else {
-      this.login.loginFB().then(res =>
-        this.app.getRootNav().setRoot(TabsPage)
-      )
+      this.login.loginFB();
     }
   }
 
