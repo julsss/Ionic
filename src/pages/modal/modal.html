@@ -28,6 +28,9 @@
     </ion-item>
     <ion-item>
       <span ion-text color="primary" block text-center padding-top padding-bottom (click)="selectImage()">Select an image</span>
+      <span ion-text color="primary" block text-center padding-top padding-bottom item-right (click)="takeImage()">Take an image</span>
+    </ion-item>
+    <ion-item>
       <input type="hidden" name="image" [(ngModel)]="newTodo.image">
       <img [src]="newTodo.image">
     </ion-item>
@@ -49,6 +52,9 @@
     </ion-item>
     <ion-item>
       <span ion-text color="primary" block text-center padding-top padding-bottom (click)="selectImage()">Select an image</span>
+      <span ion-text color="primary" block text-center padding-top padding-bottom item-right (click)="takeImage()">Take an image</span>
+    </ion-item>
+    <ion-item>
       <input type="hidden" name="image" [(ngModel)]="newTodo.image">
       <img [src]="newTodo.image">
     </ion-item>

@@ -31,7 +31,7 @@ export class ModalPage {
     this.newTodo = new TodoItem();
     this.newTodo.name = "";
     this.newTodo.desc = "";
-    this.newTodo.image = "";
+    this.newTodo.image = "assets/imgs/No_Image_Available.jpg";
     this.newTodo.complete = false;
     this.creation = this.navParams.get('creation');
     if(this.creation==false){
@@ -41,20 +41,32 @@ export class ModalPage {
 
   createItem(){
     console.log(this.newTodo);
-    if (this.newTodo.image==""){
-      this.newTodo.image = "https://firebasestorage.googleapis.com/v0/b/firebase-projet-mobile.appspot.com/o/No_Image_Available.jpg?alt=media&token=b78533d7-ecfb-418e-9bd5-d17c316e7f3b";
-    }
     this.database.addTodo(this.uuidlist,this.newTodo);
     this.navCtrl.pop();
   }
 
   selectImage(){
-
     this.img.selectImage().then(res =>{
       console.log(this.newTodo.image);
-      this.database.deleteImageItem(this.newTodo.image);
+      if (this.database.imageExist(this.newTodo.image)){
+        this.database.deleteImageItem(this.newTodo.image);
+      }
       this.newTodo.image = res;
     });
+  }
+
+  takeImage(){
+    this.img.takeImage().then(res => {
+      console.log(this.newTodo.image);
+      if (this.database.imageExist(this.newTodo.image)){
+        this.database.deleteImageItem(this.newTodo.image);
+      }
+      this.newTodo.image = res;
+    });
+  }
+
+  showImage(){
+    return this.newTodo.image;
   }
 
   editItem(){

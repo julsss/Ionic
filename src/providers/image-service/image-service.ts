@@ -12,6 +12,31 @@ export class ImageServiceProvider {
   {
   }
 
+  takeImage() : Promise<any>
+  {
+    return new Promise(resolve =>
+    {
+      let cameraOptions : CameraOptions = {
+        sourceType         : this._CAMERA.PictureSourceType.CAMERA,
+        destinationType    : this._CAMERA.DestinationType.DATA_URL,
+        quality            : 100,
+        targetWidth        : 320,
+        targetHeight       : 240,
+        encodingType       : this._CAMERA.EncodingType.JPEG,
+        correctOrientation : true
+      };
+
+      this._CAMERA.getPicture(cameraOptions)
+        .then((data) =>
+        {
+          this.cameraImage 	= "data:image/jpeg;base64," + data;
+          console.log(this.cameraImage);
+          resolve(this.cameraImage);
+        });
+
+
+    });
+  }
 
   selectImage() : Promise<any>
   {

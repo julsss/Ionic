@@ -169,6 +169,10 @@ export class FirebaseProvider {
     });
   }
 
+  imageExist(image){
+    return !(image.startsWith("assets/imgs") || image.startsWith("data:image/jpeg;base64,"));
+  }
+
   deleteImageItem(image){
     firebase.storage().refFromURL(image).delete();
   }

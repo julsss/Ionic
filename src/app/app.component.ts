@@ -24,10 +24,10 @@ export class MyApp {
       splashScreen.hide();
       login.isLogged.subscribe(logged => {
         if (logged){
-          this.nav.push(TabsPage);
+          this.nav.setRoot(TabsPage);
         }
         else {
-          this.nav.pop();
+          this.nav.setRoot(LoginPage);
         }
       })
     });
