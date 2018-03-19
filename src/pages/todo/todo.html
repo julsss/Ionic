@@ -18,7 +18,9 @@
   <ion-list>
     <ion-item-sliding *ngFor="let item of todoItems | async">
       <ion-item >
-        <ion-icon name="cart" item-start></ion-icon>
+        <ion-avatar item-start>
+          <img [src]="item.image">
+        </ion-avatar>
         <ion-label>{{item.name}}</ion-label>
         <div item-content>
           {{item.desc}}

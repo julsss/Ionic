@@ -48,6 +48,7 @@ export class TodoPage {
     let currentTodo : TodoItem = new TodoItem();
     currentTodo.uuid = iditem.id;
     currentTodo.desc = iditem.desc;
+    currentTodo.image = iditem.image;
     currentTodo.complete = iditem.complete;
     currentTodo.name = iditem.name;
     let modal = this.modalCtrl.create(ModalPage, {uuidlist : this.uidlist, creation : false, item : currentTodo});

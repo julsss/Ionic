@@ -1,4 +1,5 @@
 ///<reference path="../../node_modules/angularfire2/database/database.module.d.ts"/>
+///<reference path="../../node_modules/@ionic-native/camera/index.d.ts"/>
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { GooglePlus } from '@ionic-native/google-plus';
@@ -28,6 +29,9 @@ import {Facebook} from "@ionic-native/facebook";
 import {AngularFireDatabaseModule} from "angularfire2/database";
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { LoginServiceProvider } from '../providers/login-service/login-service';
+import { ImageServiceProvider } from '../providers/image-service/image-service';
+import { PreloaderServiceProvider } from '../providers/preloader-service/preloader-service';
+import {Camera} from "@ionic-native/camera";
 @NgModule({
   declarations: [
     MyApp,
@@ -69,6 +73,9 @@ import { LoginServiceProvider } from '../providers/login-service/login-service';
     Facebook,
     FirebaseProvider,
     LoginServiceProvider,
+    ImageServiceProvider,
+    PreloaderServiceProvider,
+    Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

@@ -7,10 +7,11 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>modal</ion-title>
+    <ion-title>Modale</ion-title>
   </ion-navbar>
 
 </ion-header>
+
 <ion-content class="view-class">
   <form *ngIf="creation" (ngSubmit)="createItem()">
     <ion-item>
@@ -25,8 +26,14 @@
       <ion-label color="primary">Complete</ion-label>
       <ion-checkbox item-end disabled="false" checked="false" [(ngModel)]="newTodo.complete" [ngModelOptions]="{standalone: true}"></ion-checkbox>
     </ion-item>
+    <ion-item>
+      <span ion-text color="primary" block text-center padding-top padding-bottom (click)="selectImage()">Select an image</span>
+      <input type="hidden" name="image" [(ngModel)]="newTodo.image">
+      <img [src]="newTodo.image">
+    </ion-item>
     <button ion-button type="submit" block>Create Item</button>
   </form>
+
   <form *ngIf="!creation" (ngSubmit)="editItem()">
     <ion-item>
       <ion-label color="primary">Name</ion-label>
@@ -39,6 +46,11 @@
     <ion-item>
       <ion-label color="primary">Complete</ion-label>
       <ion-checkbox item-end disabled="false" checked="false" [(ngModel)]="newTodo.complete" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <span ion-text color="primary" block text-center padding-top padding-bottom (click)="selectImage()">Select an image</span>
+      <input type="hidden" name="image" [(ngModel)]="newTodo.image">
+      <img [src]="newTodo.image">
     </ion-item>
     <button ion-button type="submit" block>Update Item</button>
   </form>

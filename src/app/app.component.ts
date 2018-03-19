@@ -24,7 +24,6 @@ export class MyApp {
       splashScreen.hide();
       login.isLogged.subscribe(logged => {
         if (logged){
-          console.log("HELLLLLLLLLLOOOOOOOOOOO");
           this.nav.push(TabsPage);
         }
         else {
