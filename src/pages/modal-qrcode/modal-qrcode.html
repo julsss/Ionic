@@ -1,0 +1,24 @@
+<!--
+  Generated template for the ModalQrcodePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>modal-qrcode</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card *ngIf="createdCode">
+    <ngx-qrcode [qrc-value]="createdCode"></ngx-qrcode>
+    <!--<ion-card-content>
+      <p>Value: {{ createdCode }}</p>
+    </ion-card-content>-->
+  </ion-card>
+  <button ion-button color="danger" (click)="createCode()">Stop Scan</button>
+</ion-content>

@@ -1,9 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
-import {App, NavController, Platform} from "ionic-angular";
+import {App, Platform} from "ionic-angular";
 import {FirebaseApp} from "angularfire2";
 import {AngularFireAuth} from "angularfire2/auth";
-import {TabsPage} from "../../pages/tabs/tabs";
 import {Facebook, FacebookLoginResponse} from "@ionic-native/facebook";
 import {GooglePlus} from "@ionic-native/google-plus";
 import firebase from "firebase";

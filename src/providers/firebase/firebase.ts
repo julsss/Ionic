@@ -24,30 +24,48 @@ export class FirebaseProvider {
   }
 
   getAllTodoList() {
-    return this.database.list('/'+this.userProfile.uid+'/todoList');
+
+    return this.database.list('/todoList',
+      ref => ref.orderByChild('users/'+this.userProfile.uid).equalTo(true));
+
+    //return this.database.list('/'+this.userProfile.uid+'/todoList');
   }
 
   getTodoItems(idList : string){
-    return this.database.list('/'+this.userProfile.uid+'/todoList/'+idList+'/items');
+    return this.database.list('/todoList/'+idList+'/items');
   }
 
   /*  FONCTIONS QUI TRAITE LES LISTES*/
 
   editTodoList(idList:string,name:string){
-    this.database.list('/'+this.userProfile.uid+'/todoList').update(idList,{name:name})
+    this.database.list('/todoList').update(idList,{name:name})
   }
 
   addTodoList(name) {
-    const newTodoList = this.database.list('/'+this.userProfile.uid+'/todoList').push({});
+    const newTodoList = this.database.list('/todoList').push({});
     newTodoList.set({
       id: newTodoList.key,
       name: name,
-      nbItems : 0
+      nbItems : 0,
     });
+    this.database.list('/todoList/'+newTodoList.key+'/users').set(this.userProfile.uid,true);
   }
 
   removeTodoList(id) {
-    this.database.list('/'+this.userProfile.uid+'/todoList/').remove(id);
+    this.database.list('/todoList/'+id+'/users/').remove(this.userProfile.uid);
+    let no_child : boolean;
+    firebase.database().ref().child('/todoList/'+id+'/users/')
+      .once('value', function (snapshot) {
+        no_child = !snapshot.hasChildren();
+    });
+    if (no_child){
+      this.database.list('/todoList/').remove(id);
+    }
+      //this.database.list('/todoList/').remove(id);
+  }
+
+  addTodoListShared(idList){
+    this.database.list('/todoList/'+idList+'/users').set(this.userProfile.uid,true);
   }
 
   /*  FONCTIONS QUI TRAITE LES ITEMS*/
@@ -56,7 +74,7 @@ export class FirebaseProvider {
     if (newTodoItem.image.startsWith("data:image/jpeg;base64,")){
       console.log("ADD TODO IMAGE != null");
       this.uploadImageItem(newTodoItem.image).then( res => {
-        const newTodo = this.database.list('/' + this.userProfile.uid + '/todoList/' + idList + '/items/').push({});
+        const newTodo = this.database.list('/todoList/' + idList + '/items/').push({});
         newTodo.set({
           id: newTodo.key,
           name: newTodoItem.name,
@@ -65,12 +83,12 @@ export class FirebaseProvider {
           complete: newTodoItem.complete
         });
         console.log(res.downloadURL);
-        this.database.object('/' + this.userProfile.uid + '/todoList/' + idList + '/nbItems').query.ref.transaction((items => items + 1));
+        this.database.object('/todoList/' + idList + '/nbItems').query.ref.transaction((items => items + 1));
       });
     }
     else {
       console.log("ADD TODO IMAGE == null");
-      const newTodo = this.database.list('/' + this.userProfile.uid + '/todoList/' + idList + '/items/').push({});
+      const newTodo = this.database.list('/todoList/' + idList + '/items/').push({});
       newTodo.set({
         id: newTodo.key,
         name: newTodoItem.name,
@@ -79,14 +97,14 @@ export class FirebaseProvider {
         complete: newTodoItem.complete
       });
 
-      this.database.object('/' + this.userProfile.uid + '/todoList/' + idList + '/nbItems').query.ref.transaction((items => items + 1));
+      this.database.object('/todoList/' + idList + '/nbItems').query.ref.transaction((items => items + 1));
     }
   }
 
   editTodo(idList : string,newTodoItem : TodoItem) {
     if(!newTodoItem.image.startsWith("data:image/jpeg;base64,")){
       console.log("EDIT TODO SAME IMAGE");
-      this.database.list('/'+this.userProfile.uid+'/todoList/'+idList+'/items').update(newTodoItem.uuid,{
+      this.database.list('/todoList/'+idList+'/items').update(newTodoItem.uuid,{
         name: newTodoItem.name,
         desc: newTodoItem.desc,
         image: newTodoItem.image,
@@ -97,7 +115,7 @@ export class FirebaseProvider {
       console.log("EDIT TODO NEW IMAGE");
       this.uploadImageItem(newTodoItem.image).then( res => {
         newTodoItem.image = res.downloadURL;
-        this.database.list('/'+this.userProfile.uid+'/todoList/'+idList+'/items').update(newTodoItem.uuid,{
+        this.database.list('/todoList/'+idList+'/items').update(newTodoItem.uuid,{
           name: newTodoItem.name,
           desc: newTodoItem.desc,
           image: newTodoItem.image,
@@ -108,8 +126,8 @@ export class FirebaseProvider {
   }
 
   deleteTodo(idList : string, idTodoItem : string){
-    this.database.list('/'+this.userProfile.uid+'/todoList/'+idList+'/items/').remove(idTodoItem);
-    this.database.object('/'+this.userProfile.uid+'/todoList/'+idList+'/nbItems').query.ref.transaction((items => items-1));
+    this.database.list('/todoList/'+idList+'/items/').remove(idTodoItem);
+    this.database.object('/todoList/'+idList+'/nbItems').query.ref.transaction((items => items-1));
   }
 
   //POUR LES IMAGES

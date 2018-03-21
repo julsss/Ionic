@@ -22,24 +22,32 @@
         {{list.name}} : {{list.nbItems}}
       </button>
       <ion-item-options side="right">
-        <button ion-button color="danger" icon-start (click)="presentConfirm(list.id)">
-          <ion-icon name="trash">
-          </ion-icon>
-          Supprimer
-        </button>
         <button ion-button color="primary" icon-start (click)="editList(list.id,list.name)">
           <ion-icon name="construct">
           </ion-icon>
           Modifier
         </button>
+        <button ion-button color="secondary" icon-start (click)="presentModal(list.id)">
+          <ion-icon name="barcode">
+          </ion-icon>
+          Partager
+        </button>
+        <button ion-button color="danger" icon-start (click)="presentConfirm(list.id)">
+          <ion-icon name="trash">
+          </ion-icon>
+          Supprimer
+        </button>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
-  <button ion-item (click)="ajoutList()">
-    Ajouter Liste
-  </button>
-
-
+  <ion-buttons>
+    <button ion-button color="primary" (click)="ajoutList()">
+      Ajouter une Liste
+    </button>
+    <button ion-button color="secondary" (click)="scanCode()">
+      Récupérer une liste
+    </button>
+  </ion-buttons>
 
 
 </ion-content>

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {TodoServiceProvider} from "../../providers/todo-service/todo-service";
 import {TodoItem} from "../../model/todoItem";
 import {FirebaseProvider} from "../../providers/firebase/firebase";
 import {ImageServiceProvider} from "../../providers/image-service/image-service";

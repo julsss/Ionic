@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
-import {TodoServiceProvider} from "../../providers/todo-service/todo-service";
-import {TodoList} from "../../model/todoList";
+import {AlertController, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {TodoPage} from "../todo/todo";
 import {FirebaseProvider} from "../../providers/firebase/firebase";
-import firebase from "firebase";
 import {Observable} from "rxjs/Observable";
-import {AngularFireList} from "angularfire2/database";
+import {BarcodeScanner} from "@ionic-native/barcode-scanner";
+import {ModalQrcodePage} from "../modal-qrcode/modal-qrcode";
 
 /**
  * Generated class for the TodosPage page.
@@ -26,11 +24,32 @@ export class TodosPage {
   todoList: Observable<any[]>;
   nbItems : number;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl : AlertController, private database : FirebaseProvider) {
+  scannedCode = null;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl : AlertController,
+              private database : FirebaseProvider,private barcodeScanner: BarcodeScanner, private modalCtrl : ModalController) {
     console.log("Constructor of TodosPage");
     //this.todoListAngFire = this.database.getAllTodoList();
     this.todoList = this.database.getAllTodoList().valueChanges();
+
   }
+
+
+  scanCode() {
+    this.barcodeScanner.scan().then(barcodeData => {
+      this.scannedCode = barcodeData.text;
+      console.log(this.scannedCode);
+      this.database.addTodoListShared(this.scannedCode);
+    }, (err) => {
+      console.log('Error: ', err);
+    });
+  }
+
+  presentModal(uidlist) {
+    let modal = this.modalCtrl.create(ModalQrcodePage, {uuidlist : uidlist});
+    modal.present();
+  }
+
 
   itemSelected(n : string, uid : string ){
     this.navCtrl.push(TodoPage,{namelist: n, uid : uid});

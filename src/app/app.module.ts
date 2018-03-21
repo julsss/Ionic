@@ -4,7 +4,7 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import {AngularFireModule, FirebaseApp} from "angularfire2";
+import {AngularFireModule} from "angularfire2";
 import { AngularFireAuthModule } from 'angularfire2/auth'
 import { MyApp } from './app.component';
 
@@ -20,8 +20,6 @@ import { TodoServiceProvider } from '../providers/todo-service/todo-service';
 import {TodoPage} from "../pages/todo/todo";
 import {ModalPage} from "../pages/modal/modal";
 import {LoginPage} from "../pages/login/login";
-import * as firebase from "firebase";
-
 
 import { config } from "./app.firebase.config"
 import {ProfilePage} from "../pages/profile/profile";
@@ -32,6 +30,11 @@ import { LoginServiceProvider } from '../providers/login-service/login-service';
 import { ImageServiceProvider } from '../providers/image-service/image-service';
 import { PreloaderServiceProvider } from '../providers/preloader-service/preloader-service';
 import {Camera} from "@ionic-native/camera";
+
+import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import {ModalQrcodePage} from "../pages/modal-qrcode/modal-qrcode";
+
 @NgModule({
   declarations: [
     MyApp,
@@ -43,13 +46,15 @@ import {Camera} from "@ionic-native/camera";
     TodoPage,
     ModalPage,
     LoginPage,
-    ProfilePage
+    ProfilePage,
+    ModalQrcodePage
   ],
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(config),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
+    NgxQRCodeModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -63,7 +68,8 @@ import {Camera} from "@ionic-native/camera";
     TodoPage,
     ModalPage,
     LoginPage,
-    ProfilePage
+    ProfilePage,
+    ModalQrcodePage
   ],
   providers: [
     StatusBar,
@@ -76,6 +82,7 @@ import {Camera} from "@ionic-native/camera";
     ImageServiceProvider,
     PreloaderServiceProvider,
     Camera,
+    BarcodeScanner,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

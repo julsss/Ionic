@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {TodoItem} from "../../model/todoItem";
 import {AlertController} from "ionic-angular";
-import {TodoServiceProvider} from "../../providers/todo-service/todo-service";
 import {ModalPage} from "../modal/modal";
 import {FirebaseProvider} from "../../providers/firebase/firebase";
 import {Observable} from "rxjs/Observable";
