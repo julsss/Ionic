@@ -34,6 +34,7 @@ import {Camera} from "@ionic-native/camera";
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import {ModalQrcodePage} from "../pages/modal-qrcode/modal-qrcode";
+import { AdMobFree } from '@ionic-native/admob-free';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import {ModalQrcodePage} from "../pages/modal-qrcode/modal-qrcode";
     PreloaderServiceProvider,
     Camera,
     BarcodeScanner,
+    AdMobFree,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
