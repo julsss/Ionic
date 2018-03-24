@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {NavController, Platform} from 'ionic-angular';
+import {NavController} from 'ionic-angular';
 import {AdMobFree, AdMobFreeBannerConfig} from "@ionic-native/admob-free";
 
 @Component({

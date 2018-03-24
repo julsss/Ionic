@@ -5,6 +5,8 @@ import {FirebaseProvider} from "../../providers/firebase/firebase";
 import {Observable} from "rxjs/Observable";
 import {BarcodeScanner} from "@ionic-native/barcode-scanner";
 import {ModalQrcodePage} from "../modal-qrcode/modal-qrcode";
+import {LocalNotifications} from "@ionic-native/local-notifications";
+import {Vibration} from "@ionic-native/vibration";
 
 /**
  * Generated class for the TodosPage page.
@@ -27,10 +29,21 @@ export class TodosPage {
   scannedCode = null;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl : AlertController,
-              private database : FirebaseProvider,private barcodeScanner: BarcodeScanner, private modalCtrl : ModalController) {
+              private database : FirebaseProvider,private barcodeScanner: BarcodeScanner,
+              private modalCtrl : ModalController, private localNotifications: LocalNotifications, private vibr : Vibration) {
     console.log("Constructor of TodosPage");
     //this.todoListAngFire = this.database.getAllTodoList();
+
     this.todoList = this.database.getAllTodoList().valueChanges();
+    this.todoList.subscribe(res =>{
+        this.localNotifications.schedule({
+          id: 1,
+          text: 'Une Liste a été modifié',
+        });
+        this.vibr.vibrate(1000);
+        console.log("LISTE CHANGE !!!!!!!");
+      }
+    )
 
   }
 

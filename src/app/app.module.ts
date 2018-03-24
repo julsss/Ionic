@@ -35,7 +35,8 @@ import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import {ModalQrcodePage} from "../pages/modal-qrcode/modal-qrcode";
 import { AdMobFree } from '@ionic-native/admob-free';
-
+import {LocalNotifications} from "@ionic-native/local-notifications";
+import {Vibration } from "@ionic-native/vibration";
 @NgModule({
   declarations: [
     MyApp,
@@ -85,6 +86,8 @@ import { AdMobFree } from '@ionic-native/admob-free';
     Camera,
     BarcodeScanner,
     AdMobFree,
+    LocalNotifications,
+    Vibration,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
