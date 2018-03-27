@@ -16,7 +16,6 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {TodosPage} from "../pages/todos/todos";
-import { TodoServiceProvider } from '../providers/todo-service/todo-service';
 import {TodoPage} from "../pages/todo/todo";
 import {ModalPage} from "../pages/modal/modal";
 import {LoginPage} from "../pages/login/login";
@@ -37,6 +36,10 @@ import {ModalQrcodePage} from "../pages/modal-qrcode/modal-qrcode";
 import { AdMobFree } from '@ionic-native/admob-free';
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {Vibration } from "@ionic-native/vibration";
+import {Geolocation} from "@ionic-native/geolocation";
+import {MapPage} from "../pages/map/map";
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -49,7 +52,8 @@ import {Vibration } from "@ionic-native/vibration";
     ModalPage,
     LoginPage,
     ProfilePage,
-    ModalQrcodePage
+    ModalQrcodePage,
+    MapPage
   ],
   imports: [
     BrowserModule,
@@ -71,12 +75,12 @@ import {Vibration } from "@ionic-native/vibration";
     ModalPage,
     LoginPage,
     ProfilePage,
-    ModalQrcodePage
+    ModalQrcodePage,
+    MapPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    TodoServiceProvider,
     GooglePlus,
     Facebook,
     FirebaseProvider,
@@ -88,6 +92,7 @@ import {Vibration } from "@ionic-native/vibration";
     AdMobFree,
     LocalNotifications,
     Vibration,
+    Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

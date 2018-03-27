@@ -28,15 +28,20 @@
         <ion-checkbox item-end disabled="true" [(ngModel)]="item.complete"></ion-checkbox>
       </ion-item>
       <ion-item-options side="right">
-        <button ion-button color="danger" icon-start (click)="presentConfirm(item.id)">
-          <ion-icon name="trash">
-          </ion-icon>
-          Supprimer
-        </button>
         <button ion-button color="primary" icon-start (click)="editItem(item)">
           <ion-icon name="construct">
           </ion-icon>
           Modifier
+        </button>
+        <button ion-button color="secondary" icon-start (click)="geoItem(item)">
+          <ion-icon name="locate">
+          </ion-icon>
+          Géo
+        </button>
+        <button ion-button color="danger" icon-start (click)="presentConfirm(item.id)">
+          <ion-icon name="trash">
+          </ion-icon>
+          Supprimer
         </button>
       </ion-item-options>
     </ion-item-sliding>

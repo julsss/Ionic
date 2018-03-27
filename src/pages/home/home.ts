@@ -15,7 +15,7 @@ export class HomePage {
   displayBanner() {
     const bannerConfig: AdMobFreeBannerConfig = {
       // we will just use a test id for this tutorial
-      id: 'ca-app-pub-3314972172145285/3705739439',
+      //id: 'ca-app-pub-3314972172145285/3705739439',
       isTesting: true,
       autoShow: true,
       bannerAtTop:false // default is false

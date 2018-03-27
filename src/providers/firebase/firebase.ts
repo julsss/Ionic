@@ -19,16 +19,18 @@ export class FirebaseProvider {
           this.userProfile = null;
         }
       }
-    )
+    );
     this.userProfile=firebase.auth().currentUser;
   }
 
   getAllTodoList() {
-
     return this.database.list('/todoList',
       ref => ref.orderByChild('users/'+this.userProfile.uid).equalTo(true));
+  }
 
-    //return this.database.list('/'+this.userProfile.uid+'/todoList');
+  getMyTodoList() {
+    return this.database.list('/todoList',
+      ref => ref.orderByChild('owner').equalTo(this.userProfile.uid));
   }
 
   getTodoItems(idList : string){
@@ -47,6 +49,7 @@ export class FirebaseProvider {
       id: newTodoList.key,
       name: name,
       nbItems : 0,
+      owner : this.userProfile.uid
     });
     this.database.list('/todoList/'+newTodoList.key+'/users').set(this.userProfile.uid,true);
   }
@@ -80,6 +83,8 @@ export class FirebaseProvider {
           name: newTodoItem.name,
           desc: newTodoItem.desc,
           image: res.downloadURL,
+          lat : newTodoItem.lat,
+          lng : newTodoItem.lng,
           complete: newTodoItem.complete
         });
         console.log(res.downloadURL);
@@ -94,6 +99,8 @@ export class FirebaseProvider {
         name: newTodoItem.name,
         desc: newTodoItem.desc,
         image: newTodoItem.image,
+        lat : newTodoItem.lat,
+        lng : newTodoItem.lng,
         complete: newTodoItem.complete
       });
 

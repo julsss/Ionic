@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {TodoItem} from "../../model/todoItem";
 import {FirebaseProvider} from "../../providers/firebase/firebase";
 import {ImageServiceProvider} from "../../providers/image-service/image-service";
+import {Geolocation} from "@ionic-native/geolocation";
 
 /**
  * Generated class for the ModalPage page.
@@ -24,7 +25,9 @@ export class ModalPage {
 
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private database : FirebaseProvider, private img : ImageServiceProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private database : FirebaseProvider, private img : ImageServiceProvider,
+              private geolocation : Geolocation) {
     this.uuidlist = this.navParams.get('uuidlist');
 
     this.newTodo = new TodoItem();
@@ -39,9 +42,13 @@ export class ModalPage {
   }
 
   createItem(){
-    console.log(this.newTodo);
-    this.database.addTodo(this.uuidlist,this.newTodo);
-    this.navCtrl.pop();
+    this.geolocation.getCurrentPosition().then(position => {
+      console.log(this.newTodo);
+      this.newTodo.lat = position.coords.latitude;
+      this.newTodo.lng = position.coords.longitude;
+      this.database.addTodo(this.uuidlist,this.newTodo);
+      this.navCtrl.pop();
+    });
   }
 
   selectImage(){

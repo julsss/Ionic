@@ -19,23 +19,24 @@ import {Vibration} from "@ionic-native/vibration";
 @Component({
   selector: 'page-todos',
   templateUrl: 'todos.html',
-  // providers: [[TodoServiceProvider]]
 })
 export class TodosPage {
 
   todoList: Observable<any[]>;
   nbItems : number;
-
+  userid : string;
+  typeList ='All';
   scannedCode = null;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl : AlertController,
               private database : FirebaseProvider,private barcodeScanner: BarcodeScanner,
-              private modalCtrl : ModalController, private localNotifications: LocalNotifications, private vibr : Vibration) {
+              private modalCtrl : ModalController, private localNotifications: LocalNotifications,
+              private vibr : Vibration) {
     console.log("Constructor of TodosPage");
     //this.todoListAngFire = this.database.getAllTodoList();
-
+    this.userid=this.database.userProfile.uid;
     this.todoList = this.database.getAllTodoList().valueChanges();
-    this.todoList.subscribe(res =>{
+    this.database.getAllTodoList().valueChanges().subscribe(res =>{
         this.localNotifications.schedule({
           id: 1,
           text: 'Une Liste a été modifié',
@@ -47,6 +48,20 @@ export class TodosPage {
 
   }
 
+
+
+  changeList(){
+    if (this.typeList === 'My'){
+      console.log("Mytodolist");
+      console.log(this.typeList);
+      this.todoList = this.database.getMyTodoList().valueChanges();
+    }
+    else {
+      console.log("Othertodolist");
+      console.log(this.typeList);
+      this.todoList = this.database.getAllTodoList().valueChanges();
+    }
+  }
 
   scanCode() {
     this.barcodeScanner.scan().then(barcodeData => {

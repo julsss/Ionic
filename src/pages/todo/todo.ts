@@ -6,6 +6,7 @@ import {ModalPage} from "../modal/modal";
 import {FirebaseProvider} from "../../providers/firebase/firebase";
 import {Observable} from "rxjs/Observable";
 import {AngularFireList} from "angularfire2/database";
+import {MapPage} from "../map/map";
 
 /**
  * Generated class for the TodoPage page.
@@ -27,7 +28,9 @@ export class TodoPage {
   todoItemsAngFire: AngularFireList<any>;
   todoItems: Observable<any[]>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private modalCtrl: ModalController, private alertCtrl : AlertController, private database : FirebaseProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private modalCtrl: ModalController, private alertCtrl : AlertController,
+              private database : FirebaseProvider) {
     this.namelist = navParams.get('namelist');
     this.uidlist  = navParams.get('uid');
 
@@ -76,6 +79,10 @@ export class TodoPage {
       ]
       });
     alert.present();
+  }
+
+  geoItem(item){
+    this.navCtrl.push(MapPage, {item : item});
   }
 
   ionViewDidLoad() {
