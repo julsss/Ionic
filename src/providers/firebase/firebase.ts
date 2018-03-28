@@ -37,6 +37,10 @@ export class FirebaseProvider {
     return this.database.list('/todoList/'+idList+'/items');
   }
 
+  getNbItems(idList){
+    return this.database.object('/todoList/'+idList+'/nbItems');
+  }
+
   /*  FONCTIONS QUI TRAITE LES LISTES*/
 
   editTodoList(idList:string,name:string){

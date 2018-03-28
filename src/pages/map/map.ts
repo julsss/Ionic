@@ -1,7 +1,8 @@
 import { Component} from '@angular/core';
 import {NavController, NavParams, Platform} from 'ionic-angular';
-import { GoogleMap, GoogleMapsEvent, LatLng } from '@ionic-native/google-maps';
+import { GoogleMap, GoogleMapsEvent } from '@ionic-native/google-maps';
 import {TodoItem} from "../../model/todoItem";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'page-map',
@@ -14,12 +15,16 @@ export class MapPage {
 
 
   map: GoogleMap;
-  item: TodoItem;
+  items: TodoItem[];
+  todoItems: Observable<TodoItem[]>;
 
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform) {
-    this.item = this.navParams.get('item');
+    this.todoItems = this.navParams.get('item');
+    this.todoItems.subscribe(items =>
+      this.items = items
+    );
   }
 
 
@@ -29,7 +34,7 @@ export class MapPage {
 
   loadMap(){
 
-      let location = new LatLng(this.item.lat,this.item.lng);
+      //let location = new LatLng(this.item.lat,this.item.lng);
 
       this.map = new GoogleMap('map', {
         'backgroundColor': 'white',
@@ -47,8 +52,8 @@ export class MapPage {
         },
         'camera': {
           target: {
-            lat: location.lat,
-            lng: location.lng
+            lat: this.items[0].lat,
+            lng: this.items[0].lng
           },
           'tilt': 30,
           'zoom': 15,
@@ -58,21 +63,17 @@ export class MapPage {
 
       this.map.on(GoogleMapsEvent.MAP_READY).subscribe(() => {
         console.log('Map is ready!');
-        this.map.addMarker({
-          title: 'Ionic',
-          icon: 'red',
-          animation: 'DROP',
-          position: {
-            lat: this.item.lat,
-            lng: this.item.lng
-          }
-        })
-          .then(marker => {
-            marker.on(GoogleMapsEvent.MARKER_CLICK)
-              .subscribe(() => {
-                alert('clicked');
-              });
-          });
+        for(var i=0;i<this.items.length;i++) {
+          this.map.addMarker({
+            title: this.items[i].name,
+            icon: 'red',
+            animation: 'DROP',
+            position: {
+              lat: this.items[i].lat,
+              lng: this.items[i].lng
+            }
+          })
+        }
       });
   }
 }

@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams, ToastController} from 'ionic-angular';
 import {TodoItem} from "../../model/todoItem";
 import {AlertController} from "ionic-angular";
 import {ModalPage} from "../modal/modal";
 import {FirebaseProvider} from "../../providers/firebase/firebase";
 import {Observable} from "rxjs/Observable";
-import {AngularFireList} from "angularfire2/database";
 import {MapPage} from "../map/map";
 
 /**
@@ -24,19 +23,18 @@ export class TodoPage {
 
   uidlist : string;
   namelist : string;
+  nbitem:any;
 
-  todoItemsAngFire: AngularFireList<any>;
   todoItems: Observable<any[]>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private modalCtrl: ModalController, private alertCtrl : AlertController,
-              private database : FirebaseProvider) {
+              private database : FirebaseProvider, private toastCtrl: ToastController) {
     this.namelist = navParams.get('namelist');
     this.uidlist  = navParams.get('uid');
 
-
-    this.todoItemsAngFire = this.database.getTodoItems(this.uidlist);
-    this.todoItems = this.todoItemsAngFire.valueChanges();
+    this.todoItems = this.database.getTodoItems(this.uidlist).valueChanges();
+    this.database.getNbItems(this.uidlist).valueChanges().subscribe(res =>this.nbitem=res.valueOf());;
 
 
   }
@@ -82,7 +80,22 @@ export class TodoPage {
   }
 
   geoItem(item){
-    this.navCtrl.push(MapPage, {item : item});
+    if(this.nbitem>0) {
+      this.navCtrl.push(MapPage, {item: item});
+    }
+    else{
+      let toast = this.toastCtrl.create({
+        message: "Il n'y a pas d'item à afficher",
+        duration: 3000,
+        position: 'bottom'
+      });
+
+      toast.onDidDismiss(() => {
+        console.log('Dismissed toast');
+      });
+
+      toast.present();
+    }
   }
 
   ionViewDidLoad() {

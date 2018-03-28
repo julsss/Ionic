@@ -28,7 +28,7 @@
 
   <ion-list *ngIf="typeList !== 'Shared'">
     <ion-item-sliding *ngFor="let list of todoList | async" >
-      <button ion-item (click)="itemSelected(list.name, list.id)">
+      <button ion-item (click)="itemSelected(list.name, list.id,list.nbItems)">
         {{list.name}} : {{list.nbItems}}
       </button>
       <ion-item-options side="right">

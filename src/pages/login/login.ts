@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {App, IonicPage} from 'ionic-angular';
+import {App, IonicPage, ToastController} from 'ionic-angular';
 import {LoginServiceProvider} from "../../providers/login-service/login-service";
 
 /**
@@ -16,7 +16,7 @@ import {LoginServiceProvider} from "../../providers/login-service/login-service"
 })
 export class LoginPage {
 
-  constructor(public login : LoginServiceProvider, public app : App) {
+  constructor(public login : LoginServiceProvider, public app : App, private toastCtrl: ToastController) {
 
   }
 
@@ -26,7 +26,18 @@ export class LoginPage {
       this.login.logInGoogle();
     }
     else {
-      this.login.loginFB();
+      let toast = this.toastCtrl.create({
+        message: "La connexion Facebook ne marche pas",
+        duration: 3000,
+        position: 'bottom'
+      });
+
+      toast.onDidDismiss(() => {
+        console.log('Dismissed toast');
+      });
+
+      toast.present();
+      //this.login.loginFB();
     }
   }
 

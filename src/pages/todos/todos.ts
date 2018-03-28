@@ -23,7 +23,6 @@ import {Vibration} from "@ionic-native/vibration";
 export class TodosPage {
 
   todoList: Observable<any[]>;
-  nbItems : number;
   userid : string;
   typeList ='All';
   scannedCode = null;
@@ -79,8 +78,8 @@ export class TodosPage {
   }
 
 
-  itemSelected(n : string, uid : string ){
-    this.navCtrl.push(TodoPage,{namelist: n, uid : uid});
+  itemSelected(n : string, uid : string, nbitems ){
+    this.navCtrl.push(TodoPage,{namelist: n, uid : uid, nbitem: nbitems });
   }
 
   editList(idList : string, old : string){
