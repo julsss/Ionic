@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Todos</ion-title>
+    <ion-title>Todo List</ion-title>
     <ion-segment [(ngModel)]="typeList" (ionChange)="changeList()">
       <ion-segment-button value="All">
         All Todo List
@@ -74,14 +74,13 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
-  <ion-buttons>
-    <button ion-button color="primary" (click)="ajoutList()">
-      Ajouter une Liste
-    </button>
-    <button ion-button color="secondary" (click)="scanCode()">
-      Récupérer une liste
-    </button>
-  </ion-buttons>
+
+  <ion-fab left bottom>
+    <button ion-fab mini color="secondary" (click)="scanCode()"><ion-icon name="qr-scanner"></ion-icon></button>
+  </ion-fab>
+  <ion-fab right bottom>
+    <button ion-fab mini color="primary" (click)="ajoutList()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
 
 
 </ion-content>

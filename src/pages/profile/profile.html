@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>profile</ion-title>
+    <ion-title>Profile</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -26,9 +26,11 @@
       {{userProfile.email}}
     </div>
   </ion-item>
-  <button ion-button color="danger" icon-start (click)="logOut()">
+  <ion-footer>
+  <button ion-button block color="danger" icon-start (click)="logOut()">
     <ion-icon name="log-out">
     </ion-icon>
     Se déconnecter
   </button>
+  </ion-footer>
 </ion-content>
