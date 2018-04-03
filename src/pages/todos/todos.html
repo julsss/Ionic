@@ -8,7 +8,7 @@
 
   <ion-navbar>
     <ion-title>Todo List</ion-title>
-    <ion-segment [(ngModel)]="typeList" (ionChange)="changeList()">
+    <ion-segment [(ngModel)]="typeList">
       <ion-segment-button value="All">
         All Todo List
       </ion-segment-button>
@@ -26,9 +26,33 @@
 
 <ion-content padding>
 
-  <ion-list *ngIf="typeList !== 'Shared'">
+  <ion-list *ngIf="typeList === 'All'">
     <ion-item-sliding *ngFor="let list of todoList | async" >
       <button ion-item (click)="itemSelected(list.name, list.id,list.nbItems)">
+        {{list.name}} : {{list.nbItems}}
+      </button>
+      <ion-item-options side="right">
+        <button ion-button color="primary" icon-start (click)="editList(list.id,list.name)">
+          <ion-icon name="construct">
+          </ion-icon>
+          Modifier
+        </button>
+        <button ion-button color="secondary" icon-start (click)="presentModal(list.id)">
+          <ion-icon name="barcode">
+          </ion-icon>
+          Partager
+        </button>
+        <button ion-button color="danger" icon-start (click)="presentConfirm(list.id)">
+          <ion-icon name="trash">
+          </ion-icon>
+          Supprimer
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-list *ngIf="typeList === 'My'">
+    <ion-item-sliding *ngFor="let list of todoList | async" >
+      <button ion-item *ngIf="list.owner === userid" (click)="itemSelected(list.name, list.id,list.nbItems)">
         {{list.name}} : {{list.nbItems}}
       </button>
       <ion-item-options side="right">
